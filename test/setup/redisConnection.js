@@ -1,4 +1,4 @@
-var Redis = require('redis');
+var Redis = require('then-redis');
 
 var redis = module.exports = Redis.createClient();
 

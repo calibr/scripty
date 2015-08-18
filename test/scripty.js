@@ -16,14 +16,13 @@ describe('scripty', function() {
       (typeof blank.digest).should.equal('string');
       blank.digest.length.should.equal(40);
 
-      redis.script('exists', blank.digest, function(err, exists) {
-        should.not.exist(err);
+      redis.script('exists', blank.digest).then(function(exists) {
         exists[0].should.equal(1);
 
         scripty.cache.has('blank').should.equal(true);
 
         return done();
-      });
+      }).catch(done);
     });
   });
 
@@ -44,17 +43,15 @@ describe('scripty', function() {
 
       var digest = blank.digest;
 
-      redis.script('flush', function(err) {
+      redis.script('flush').then(function() {
         blank.run(1, 'hi', function(err, result) {
-
-          should.not.exist(err);
           result.should.equal('hi');
 
           scripty.cache.has('blank').should.equal(true);
 
           return done();
         });
-      });
+      }).catch(done);
     });
   });
 
